@@ -1,2 +1,1 @@
 test1
-GENSHIN IMPACT
