@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LogoScene from '../scenes/LogoScene';
-import HomeScene from '../scenes/HomeScene';
-import TimetableScene from '../scenes/TimetableScene';
-import ChecklistScene from '../scenes/ChecklistScene';
-import TipScene from '../scenes/TipScene';
+import LogoScene from './Login/LogoScene';
+import HomeScene from './Home/HomeScene';
+import TimetableScene from './Timetable/TimetableScene';
+import ChecklistScene from './Checklist/ChecklistScene';
+import TipScene from './Tip/TipScene';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

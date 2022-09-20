@@ -7,8 +7,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Shadow } from 'react-native-neomorph-shadows';
 
-import PercentageScrollView from '../scripts/CustomComponents/PercentageScrollView';
-import { getTimeLeft, getCurrTime } from '../scripts/CustomModules/GetTime';
+import PercentageScrollView from './PercentageScrollView';
+import { getTimeLeft, getCurrTime } from './GetTime';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -52,7 +52,7 @@ export default function HomeScene({ navigation }) {
     return(
         <View style={styles.body}>
             {/* <View style={[styles.topbar]}> */}
-            <LinearGradient colors={['#FFFFFF', '#FFFFFF', '#FFFFFFBB', '#FFFFFF00']} style={styles.topbar}>
+            <LinearGradient colors={['#FFFFFF', '#FFFFFF', '#FFFFFF99', '#FFFFFF00']} style={styles.topbar}>
                 <View>
                     <Text style={{fontSize: 12, color: 'black', fontWeight: '700'}}>UID</Text>
                     <Text style={{fontSize: 14, color: 'black', fontWeight: '700'}}>0123456789</Text>
@@ -104,7 +104,10 @@ export default function HomeScene({ navigation }) {
                     </View>
                 </View>
                 <View style={{height: 165, marginTop: 20, width: '90%', flexDirection: 'row'}}>
-                    <TouchableOpacity style={[styles.currencyform, styles.shadowProp]}>
+                    <TouchableHighlight
+                        activeOpacity={0.6} underlayColor="#DDDDDD"
+                        onPress={()=>{}} style={[styles.currencyform, styles.shadowProp]}
+                    >
                         <View style={{justifyContent: 'space-between', flex: 1}}>
                             <View>
                                 <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>현재환율(보낼때)</Text>
@@ -112,7 +115,7 @@ export default function HomeScene({ navigation }) {
                             </View>
                             <Text style={{fontSize: 10, color: 'black', fontWeight: '400'}}>미국시기준 9월 14일(수){'\n'}오후 5:23 업데이트 됨</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableHighlight>
                     <TouchableOpacity style={[styles.brcardform, styles.shadowProp]}>
                         <View style={{justifyContent: 'space-between', flex: 1}}>
                             <View>
@@ -196,7 +199,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: '100%',
-        height: 90,
+        height: 70,
         flexDirection: 'row',
         paddingTop: 10,
         alignItems: 'flex-start',

@@ -4,7 +4,7 @@ import { Bar, Pie, Circle, CircleSnail } from 'react-native-progress';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Shadow } from 'react-native-neomorph-shadows';
 
-export default function TipScene() {
+export default function ChecklistScene() {
     /* const [fillState, setFillState] = useState(30);
     const widthAndHeight = 250;
     const series = [123, 321, 123, 789, 537];
