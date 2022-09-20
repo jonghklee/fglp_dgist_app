@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 import { Bar, Pie, Circle, CircleSnail } from 'react-native-progress';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Shadow } from 'react-native-neomorph-shadows';
@@ -22,38 +22,18 @@ export default function TipScene() {
     return(
         <>
             <Bar progress={0.3} width={400} height={20} />
-            {/* <AnimatedCircularProgress
-                size={200}
-                width={20}
-                fill={fillState}
-                tintColor="#00e0ff"
-                backgroundColor="#3d5875">
-                {
-                    (fill) => (
-                        <Text>
-                            { fillState }
-                        </Text>
-                    )
-                }
-            </AnimatedCircularProgress> */}
-            <Shadow
-                /* inner */ // <- enable inner shadow
-                useArt // <- set this prop to use non-native shadow on ios
-                style={{
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    backgroundColor: 'white',
-                    width: 100,
-                    height: 200,
-                    // ...include most of View/Layout styles
-                }}
+            
+            <TouchableHighlight
+                underlayColor="gray"
             >
-            </Shadow>
+                <View style={{
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    padding: 10 
+                }}>
+                    <Text>dsfadf</Text>
+                </View>
+            </TouchableHighlight>
         </>
     );
 }
