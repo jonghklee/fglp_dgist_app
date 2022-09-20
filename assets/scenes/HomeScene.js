@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import { ScrollView, RefreshControl, View, Text, TouchableOpacity } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import PercentageScrollView from '../scripts/CustomModules/PercentageScrollView';
 import LinearGradient from 'react-native-linear-gradient';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { Shadow } from 'react-native-neomorph-shadows';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -14,10 +15,12 @@ const wait = (timeout) => {
 export default function HomeScene({ navigation }) {
     const [refreshing, setRefreshing] = React.useState(false);
     const [scrollPct, setScrollPct] = useState(55);
+    const [fill, setFill] = useState(30);
+    const [mealcount, setMealcount] = useState(14);
 
     const focuspct = [55, 72, 90];
 
-    /* const getTime = () => {
+    const getTime = () => {
         const curr = new Date();   // 1. 현재 시간(Locale)
         const utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);   // 2. UTC 시간 계산
         const LA_TIME_DIFF = -7 * 60 * 60 * 1000;   // UTC -7
@@ -43,7 +46,7 @@ export default function HomeScene({ navigation }) {
                 sec: kr_curr.getSeconds(),       //To get the Current Seconds
             }
         });
-    }; */
+    };
     
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -59,7 +62,7 @@ export default function HomeScene({ navigation }) {
     return(
         <View style={styles.body}>
             {/* <LinearGradient colors={['#FFFFFF', '#FFFFFF', '#FFFFFFBB', '#FFFFFF00']} style={styles.topbar}> */}
-            <View style={[styles.topbar, scrollPct > 55 ? styles.shadowProp : null]}>
+            <View style={[styles.topbar]}>
                 <View>
                     <Text style={{fontSize: 12, color: 'black', fontWeight: '700'}}>UID</Text>
                     <Text style={{fontSize: 14, color: 'black', fontWeight: '700'}}>0123456789</Text>
@@ -77,68 +80,84 @@ export default function HomeScene({ navigation }) {
                     // console.log(readPercentage);
                 }}
             >
-                <View style={[styles.dateform, {backgroundColor: `rgba(0, 104, 254, ${OpacityCalc(focuspct[0])})`}]}>
-                    <View style={styles.flightform}>
-                        <MaterialIcons style={{marginLeft: '2%'}} name="flight-takeoff" size={40} color="white" />
-                        <View style={styles.ddayform}>
-                            <Text style={{fontSize: 14, color: 'white', fontWeight: '500'}}>출국까지  </Text>
-                            <Text style={{fontSize: 40, color: 'white', fontWeight: '700'}}>D-42</Text>
-                        </View>
+                <View style={[styles.dateform, styles.shadowProp]}>
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                        <AnimatedCircularProgress
+                            size={120}
+                            width={15}
+                            fill={fill}
+                            tintColor="#0068FE"
+                            backgroundColor="#FFFFFF"
+                            style={{zIndex: 2, transform: [{rotate: '-90deg'}]}}
+                        >
+                        </AnimatedCircularProgress>
+                        <Text style={{zIndex: 2, position: 'absolute', color: 'black', fontSize: 28, fontWeight: '300'}}>
+                            {fill}
+                            <Text style={{fontSize: 20}}>%</Text>
+                        </Text>
+                        <View style={{zIndex: 1, position: 'absolute', borderRadius: 100, width: 120, height: 120, ...styles.shadowProp}} />
+                        <Shadow inner useArt
+                            style={{
+                                ...styles.shadowProp,
+                                position: 'absolute',
+                                backgroundColor: 'white',
+                                width: 90,
+                                height: 90,
+                                borderRadius: 100,
+                                // ...include most of View/Layout styles
+                            }}
+                        />
                     </View>
-                    <View style={styles.timeform}>
-                        <View style={{alignItems: 'center'}}>
-                            <Text style={{fontSize: 14, color: 'white', fontWeight: '700'}}>미국</Text>
-                        </View>
-                        <View style={{alignItems: 'center'}}>
-                            <Text style={{fontSize: 14, color: 'white', fontWeight: '700'}}>한국</Text>
-                        </View>
+                    <View style={styles.ddayform}>
+                        <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>출국까지</Text>
+                        <Text style={{fontSize: 40, color: 'black', fontWeight: '700'}}>D-42</Text>
                     </View>
                 </View>
-                <View style={{height: 170, marginTop: 20, width: '85%', flexDirection: 'row'}}>
-                    <View style={[styles.currencyform, {backgroundColor: `rgba(0, 104, 254, ${OpacityCalc(focuspct[1])})`}]}>
+                <View style={{height: 165, marginTop: 20, width: '85%', flexDirection: 'row'}}>
+                    <View style={[styles.currencyform, styles.shadowProp]}>
                         <View>
-                            <Text style={{fontSize: 14, color: 'white', fontWeight: '500'}}>현재환율(보낼때)</Text>
-                            <Text style={{fontSize: 26, color: 'white', fontWeight: '500'}}>1337.4</Text>
+                            <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>현재환율(보낼때)</Text>
+                            <Text style={{fontSize: 26, color: 'black', fontWeight: '500'}}>1337.4</Text>
                         </View>
-                        <Text style={{fontSize: 10, color: 'white', fontWeight: '400'}}>미국시기준 9월 14일(수){'\n'}오후 5:23 업데이트 됨</Text>
+                        <Text style={{fontSize: 10, color: 'black', fontWeight: '400'}}>미국시기준 9월 14일(수){'\n'}오후 5:23 업데이트 됨</Text>
                     </View>
-                    <View style={[styles.brcardform, {backgroundColor: `rgba(0, 104, 254, ${OpacityCalc(focuspct[1])})`}]}>
+                    <View style={[styles.brcardform, styles.shadowProp]}>
                         <View>
-                            <Text style={{fontSize: 14, color: 'white', fontWeight: '500'}}>Bruincard</Text>
-                            <Text style={{fontSize: 26, color: 'white', fontWeight: '500'}}>$15.40</Text>
+                            <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>Bruincard</Text>
+                            <Text style={{fontSize: 26, color: 'black', fontWeight: '500'}}>$15.40</Text>
                         </View>
-                        <Text style={{fontSize: 10, color: 'white', fontWeight: '400'}}>지금 업데이트 됨</Text>
+                        <Text style={{fontSize: 10, color: 'black', fontWeight: '400'}}>지금 업데이트 됨</Text>
                     </View>
                 </View>
-                <View style={[styles.mealform, {backgroundColor: `rgba(0, 104, 254, ${OpacityCalc(focuspct[2])})`}]}>
+                <View style={styles.mealform}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-                            <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>학식  </Text>
-                            <Text style={{fontSize: 16, color: 'white', fontWeight: '500'}}>남은횟수: 12</Text>
+                            <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>학식  </Text>
+                            <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>남은횟수: 12</Text>
                         </View>
                         <View style={styles.menuiconform}>
-                            <Feather name="minus" size={20} color="white" />
-                            <Feather name="plus" size={20} color="white" />
-                            <Feather name="menu" size={20} color="white" />
+                            <Feather name="minus" size={20} color="black" />
+                            <Feather name="plus" size={20} color="black" />
+                            <Feather name="menu" size={20} color="black" />
                         </View>
                     </View>
-                    <Text style={{fontSize: 10, color: 'white', fontWeight: '400'}}>미국시기준 9월14일(수) 오후 5:23 업데이트 됨</Text>
-                    <View style={[styles.menuform, {backgroundColor: `rgba(126, 179, 252, ${OpacityCalc(focuspct[2])})`}]}>
-                        <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>Bruin Café</Text>
+                    <Text style={{fontSize: 10, color: 'black', fontWeight: '400'}}>미국시기준 9월14일(수) 오후 5:23 업데이트 됨</Text>
+                    <View style={[styles.menuform]}>
+                        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>Bruin Café</Text>
                         <View style={styles.menu}>
                             <Feather name="x" size={30} color="#808080" />
                             <Text style={{fontSize: 12, color: '#808080', fontWeight: '400', marginTop: 8}}>정보가 없습니다</Text>
                         </View>
                     </View>
-                    <View style={[styles.menuform, {backgroundColor: `rgba(126, 179, 252, ${OpacityCalc(focuspct[2])})`}]}>
-                        <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>De Neve Plaza</Text>
+                    <View style={[styles.menuform]}>
+                        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>De Neve Plaza</Text>
                         <View style={styles.menu}>
                             <Feather name="x" size={30} color="#808080" />
                             <Text style={{fontSize: 12, color: '#808080', fontWeight: '400', marginTop: 8}}>정보가 없습니다</Text>
                         </View>
                     </View>
-                    <View style={[styles.menuform, {backgroundColor: `rgba(126, 179, 252, ${OpacityCalc(focuspct[2])})`}]}>
-                        <Text style={{fontSize: 20, color: 'white', fontWeight: '700'}}>Rieber Hall</Text>
+                    <View style={[styles.menuform]}>
+                        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>Rieber Hall</Text>
                         <View style={styles.menu}>
                             <Feather name="x" size={30} color="#808080" />
                             <Text style={{fontSize: 12, color: '#808080', fontWeight: '400', marginTop: 8}}>정보가 없습니다</Text>
@@ -152,7 +171,14 @@ export default function HomeScene({ navigation }) {
 
 const styles = StyleSheet.create({
     shadowProp: {
-        elevation: 20,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        shadowColor: "#000",
+        elevation: 4,
     },
     body: {
         flex: 1,
@@ -188,11 +214,15 @@ const styles = StyleSheet.create({
     },
     dateform: {
         marginTop: 80,
+        paddingLeft: 15,
+        paddingRight: 25,
         width: '85%',
-        height: 170,
-        justifyContent: 'space-evenly',
+        height: 150,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 30,
+        backgroundColor: 'white',
     },
     flightform: {
         width: '75%',
@@ -200,14 +230,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    timeform: {
-        width: '80%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     ddayform: {
-        flexDirection: 'row',
-        alignItems: 'baseline',
+        height: 90,
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
     },
     currencyform: {
         paddingTop: 18,
@@ -216,6 +242,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'space-between',
         flex: 1,
+        backgroundColor: 'white',
     },
     brcardform: {
         marginLeft: 20,
@@ -225,18 +252,20 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'space-between',
         flex: 1,
+        backgroundColor: 'white',
     },
     mealform: {
-        marginTop: 20,
+        marginTop: 10,
         padding: 20,
-        width: '85%',
-        borderRadius: 30,
+        width: '100%',
         marginBottom: 30,
+        backgroundColor: 'white',
     },
     menuiconform: {
         flexDirection: 'row',
     },
     menuform: {
+        backgroundColor: 'white',
         height: 200,
         marginTop: 18,
         padding: 10,
