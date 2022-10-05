@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 /* import {
     DancingScript_400Regular,
     DancingScript_500Medium,
@@ -20,9 +20,13 @@ function LogoScene({ navigation }) {
     } */
     setTimeout(() => navigation.replace('MainApp'), 2000);
     return(
-        <View style={styles.body}>
+        <SafeAreaView style={styles.body}>
+            <StatusBar
+                backgroundColor="white"
+                barStyle="dark-content"
+            />
             <Text style={styles.title}>DiamondTree</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 

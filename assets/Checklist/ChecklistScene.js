@@ -1,39 +1,77 @@
-import { useCallback, useState } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
-import { Bar, Pie, Circle, CircleSnail } from 'react-native-progress';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { Shadow } from 'react-native-neomorph-shadows';
+import { useRef, useState } from 'react';
+import { SafeAreaView, StatusBar, Text, View, 
+         ScrollView, TouchableHighlight, Alert } from 'react-native';
 
-export default function ChecklistScene() {
-    /* const [fillState, setFillState] = useState(30);
-    const widthAndHeight = 250;
-    const series = [123, 321, 123, 789, 537];
-    const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800'];
-    
-    const increment = useCallback((timeout) => {
-        return new Promise((resolve, reject) => (
-            setTimeout(() => {
-                setFillState(fillState + 10);
-                resolve();
-            }, timeout)
-        ));   
-    }, [fillState]);
- */
+import styles from './ChecklistSceneStyle';
+import ChecklistContext, { useModeContext, useStateContext } from './ChecklistContext';
+import CreateDeleteForm from './CreateDeleteForm';
+import InputForm from './InputForm';
+import Category from './Category';
+import { style } from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
+
+export default function ChecklistScene({ navigation }) {
+    // 스크롤 위치 관리
+    const scrollRef = useRef();
+    // input focus 관리
+    const inputRef = useRef();
+
+    const mode = useModeContext();
+
     return(
-        <>
-            <Bar progress={0.3} width={400} height={20} />
-            
+        <SafeAreaView style={styles.body}>
+            <StatusBar backgroundColor="white" barStyle="dark-content" />
             <TouchableHighlight
-                underlayColor="gray"
+                underlayColor="#FFFFFF"
+                onPress={() => {
+                    scrollRef.current?.scrollTo({
+                        y: 0,
+                        animated: true,
+                    });
+                }}
             >
-                <View style={{
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    padding: 10 
-                }}>
-                    <Text>dsfadf</Text>
-                </View>
+                <Text style={styles.maintext}>체크리스트</Text>
             </TouchableHighlight>
-        </>
+            <ChecklistContext>
+                <CreateDeleteForm
+                    inputRef={inputRef}
+                    scrollRef={scrollRef}
+                    navigation={navigation}
+                />
+                <ScrollForm
+                    scrollRef={scrollRef}
+                    inputRef={inputRef}
+                />
+            </ChecklistContext>
+            {mode === "CATEGORY_DELETE" &&
+                <View
+                    style={[styles.bottomtaskbar, styles.shadowProp]}
+                />
+            }
+        </SafeAreaView>
     );
+}
+
+function ScrollForm({ scrollRef, inputRef }) {
+    const state = useStateContext();
+    const [contentheight, setContentheight] = useState(2000);
+
+    return(
+        <ScrollView
+            bounces
+            ref={scrollRef}
+            style={{marginBottom: 60}}
+            showsVerticalScrollIndicator={true}
+        >
+            {state.map((category, index) =>
+                <Category
+                    index={index}
+                    key={category.categoryID}
+                    categoryID={category.categoryID}
+                />
+            )}
+            <InputForm
+                inputRef={inputRef}
+            />
+        </ScrollView>
+    )
 }
