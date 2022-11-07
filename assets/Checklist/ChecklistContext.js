@@ -89,6 +89,16 @@ const initialState = [
                 todoname: "할 일 4",
                 done: true,
             },
+            {
+                ID: 5,
+                todoname: "할 일 4",
+                done: true,
+            },
+            {
+                ID: 6,
+                todoname: "할 일 4",
+                done: true,
+            },
         ]
     },
     {
@@ -112,6 +122,11 @@ const initialState = [
             },
             {
                 ID: 4,
+                todoname: "할 일 4",
+                done: true,
+            },
+            {
+                ID: 5,
                 todoname: "할 일 4",
                 done: true,
             },
@@ -294,7 +309,6 @@ export function useDellistContext() {
         Error("dellist context not existing");
         return;
     }
-   
     return dellist;
 }
 export function useModeContext() {

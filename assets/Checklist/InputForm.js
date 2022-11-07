@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions, View, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import styles from './ChecklistSceneStyle';
@@ -13,6 +13,11 @@ export default function InputForm({ inputRef }) {
     const [input, setInput] = useState("");
     const mode = useModeContext();
     const setMode = useSetModeContext();
+    const [editable, setEditable] = useState(false);
+
+    useEffect(() => {
+        setEditable(mode === "CATEGORY_ADD");
+    }, [mode]);
 
     const onCreate = () => {
         setInput("");
@@ -44,7 +49,7 @@ export default function InputForm({ inputRef }) {
                 value={input}
                 onChangeText={text => setInput(text)}
                 onSubmitEditing={onCreate}
-                // editable={mode === "CATEGORY_ADD"}
+                editable={editable}
             />
             <TouchableOpacity
                 onPress={onCreate}

@@ -125,7 +125,7 @@ export default styles = StyleSheet.create({
         backgroundColor: '#DFECFF',
         padding: 10,
         borderRadius: 10,
-        marginBottom: 20+bottomtabbarheight,
+        marginBottom: 20,
     },
     menu: {
         width: windowWidth-60,

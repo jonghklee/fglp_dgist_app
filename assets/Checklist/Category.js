@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 
 import styles from './ChecklistSceneStyle';
@@ -14,6 +14,10 @@ export default function Category({ categoryID, index }) {
     const mode = useModeContext();
     const dellist = useDellistContext();
     const [isSelected, setIsSelected] = useState(false);
+
+    useEffect(() => {
+        setIsSelected(false);
+    }, [mode]);
 
     const onSelectCategory = () => {
         if(mode == "CATEGORY_DELETE") {

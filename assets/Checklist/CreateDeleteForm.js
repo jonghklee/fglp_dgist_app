@@ -1,12 +1,11 @@
 import { View, Text, TouchableHighlight } from "react-native";
 
 import styles from './ChecklistSceneStyle';
-import { useDispatchContext, useDellistContext, useModeContext, useSetModeContext } from "./ChecklistContext";
+import { useDellistContext, useModeContext, useSetModeContext } from "./ChecklistContext";
 
 import Feather from 'react-native-vector-icons/Feather';
 
 export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
-    const dispatch = useDispatchContext();
     const dellist = useDellistContext();
     const mode = useModeContext();
     const setMode = useSetModeContext();
@@ -20,31 +19,18 @@ export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
             scrollRef.current.scrollToEnd({animated: true});
             inputRef.current.focus();
         }
-        else {
-            Alert.alert(
-                "CREATE ERROR",
-                "My Alert Msg",
-                [
-                    {
-                        text: "Cancel",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
-                    },
-                    { 
-                        text: "OK", onPress: () => console.log("OK Pressed")
-                    }
-                ]
-            );
+        else if(mode === "CATEGORY_DELETE") {
+            onDeleteCategory();
+            setMode("CATEGORY_ADD");
+            scrollRef.current.scrollToEnd({animated: true});
+            inputRef.current.focus();
         }
     }
 
     const onDeleteCategory = () => {
         if(mode === "CATEGORY_DELETE") {
             setMode("IDLE");
-            dispatch({
-                type: "CATEGORY_DELETE",
-                categoryIDList: dellist,
-            });
+            dellist.current = [];
             navigation.setOptions({tabBarStyle: {
                 display: 'flex',
                 height: 60,
@@ -58,22 +44,6 @@ export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
         else if(mode === "IDLE") {
             setMode("CATEGORY_DELETE");
             navigation.setOptions({tabBarStyle: {display: 'none'}});
-        }
-        else {
-            Alert.alert(
-                "DELETE ERROR",
-                "My Alert Msg",
-                [
-                    {
-                        text: "Cancel",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
-                    },
-                    { 
-                        text: "OK", onPress: () => console.log("OK Pressed")
-                    }
-                ]
-            );
         }
     }
 
@@ -92,13 +62,16 @@ export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
                 </View>
             </TouchableHighlight>
             <TouchableHighlight
-                style={[styles.deletebutton]}
-                underlayColor='#F9F9F9'
+                style={[styles.deletebutton, {backgroundColor: mode === "CATEGORY_DELETE" ? '#FF4B4B' : 'white'}]}
+                underlayColor={mode === "CATEGORY_DELETE" ? '#fc2d2d' : '#F9F9F9'}
                 onPress={onDeleteCategory}
             >
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
-                    <Feather name="minus-square" size={25} color="#CCCCCC" />
-                    <Text style={{fontWeight: '400', fontSize: 16, font: 19, color: '#CCCCCC', marginLeft: 6}}>
+                    <Feather name="minus-square" size={25} color={mode === "CATEGORY_DELETE" ? "white" : "#CCCCCC"} />
+                    <Text style={{
+                        fontWeight: '400', fontSize: 16, font: 19, marginLeft: 6,
+                        color: mode === "CATEGORY_DELETE" ? "white" : '#CCCCCC'
+                    }}>
                         카테고리 삭제
                     </Text>
                 </View>

@@ -1,13 +1,14 @@
 import { View, Text, TouchableHighlight } from 'react-native';
 
 import styles from './ChecklistSceneStyle';
-import { useDispatchContext } from './ChecklistContext';
+import { useDispatchContext, useModeContext } from './ChecklistContext';
 
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function Todo({ categoryID, ID, text, done, isdeletemode, deletelist }) {
     const dispatch = useDispatchContext();
+    const mode = useModeContext();
 
     const onToggle = () => {
         dispatch({
@@ -28,6 +29,7 @@ export default function Todo({ categoryID, ID, text, done, isdeletemode, deletel
                         width: 30, height: 30, left: -5, borderRadius: 10,
                         justifyContent: 'center', alignItems: 'center',
                     }}
+                    disabled={mode === "CATEGORY_DELETE"}
                 >
                     <View style={[styles.checkbox, { backgroundColor: done ? "black" : "rgba(255,255,255,0)" }]}>
                         { done && <Feather name="check" size={16} color="white" /> }

@@ -11,7 +11,7 @@ export default function DiningForm({ DiningRefresh }) {
 
     const otherelementheight = 353.42857142857144;      // fixed val, other component height sum
     const menuformheight =                              // tabbarheight = 60 일때
-        windowHeight - 60 - otherelementheight;
+        windowHeight - otherelementheight;
 
     const menucontent = [
         {

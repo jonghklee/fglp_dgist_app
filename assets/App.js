@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import LogoScene from './Login/LogoScene';
 import HomeScene from './Home/HomeScene';
@@ -14,7 +14,7 @@ import Checklisttabicon from './Images/checklisttab.svg'
 import Honeytabicon from './Images/honeytab.svg' */
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 const App = () => {
   return (
