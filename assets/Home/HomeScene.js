@@ -3,6 +3,9 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ScrollView, Dimensions, RefreshControl, StatusBar,
          View, Text, SafeAreaView, TouchableHighlight } from 'react-native';
 
+/* AsyncStorage 모듈 */
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 /* Open Source 모듈 */
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -59,6 +62,7 @@ export default function HomeScene({ navigation }) {
     }
 
     return(
+
         <SafeAreaView style={styles.body}>
             <StatusBar
                 backgroundColor="white"
