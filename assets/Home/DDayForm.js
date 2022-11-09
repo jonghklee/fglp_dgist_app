@@ -18,7 +18,7 @@ export default function DDayForm({ DDayRefresh, isShrinked }) {
     const progresstime = useRef(0);                         // progress 숫자 애니메이션 경과시간
 
     /* DDay 관련 */
-    const [ddayinfo, setDDayinfo] = useState({ startdate: "2022-09-28", enddate: "2022-10-05", dayleft: null });
+    const [ddayinfo, setDDayinfo] = useState({ startdate: "2022-09-28", enddate: "2022-11-20", dayleft: null });
 
     /* Shrink & Expand Animation 관련 변수 */
     const shrinkpanel = useRef(new Animated.Value(150)).current;

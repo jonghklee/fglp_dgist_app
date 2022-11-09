@@ -5,7 +5,7 @@ import HomeSceneStyle from './HomeSceneStyle';
 import CurrencyButton from './CurrencyButton';
 import BruincardButton from './BruincardButton';
 
-export default function PanelControl({ isShrinked, CurrencyRefresh, BruincardRefresh }) {
+export default function PanelControl({ isShrinked, CurrencyRefresh, BruincardRefresh, gotoBruincardScene, gotoCurrencyScene }) {
     const heightchange = useRef(new Animated.Value(165)).current;
 
     useEffect(() => {
@@ -21,8 +21,8 @@ export default function PanelControl({ isShrinked, CurrencyRefresh, BruincardRef
         <Animated.View style={{
             height: heightchange, marginTop: 20, width: '90%', flexDirection: 'row', alignItems: 'flex-end'
         }}>
-            <CurrencyButton CurrencyRefresh={CurrencyRefresh} isShrinked={isShrinked} />
-            <BruincardButton BruincardRefresh={BruincardRefresh} isShrinked={isShrinked} />
+            <CurrencyButton CurrencyRefresh={CurrencyRefresh} isShrinked={isShrinked} gotoCurrencyScene={gotoCurrencyScene} />
+            <BruincardButton BruincardRefresh={BruincardRefresh} isShrinked={isShrinked} gotoBruincardScene={gotoBruincardScene} />
         </Animated.View>
     );
 }

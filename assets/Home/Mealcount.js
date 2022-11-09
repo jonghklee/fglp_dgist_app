@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -7,14 +8,24 @@ import styles from './HomeSceneStyle';
 
 export default function Mealcount({ MealcountRefresh }) {
     /* 학식 카운트 관련 */
-    const [mealcount, setMealcount] = useState(14);
+    const [mealcount, setMealcount] = useState(0);
 
     useEffect(() => {
         MealcountRefresh.current = RefreshMealcount;
     }, []);
 
     const RefreshMealcount = () => {
-
+        let count;
+        AsyncStorage.getItem('mealcount', (err, result) => {
+            if(!err) count = result;
+            else console.log("ERROR");
+        });
+        console.log(count);
+        if(count == null) {
+            setMealcount(14);
+            AsyncStorage.setItem('mealcount', "14");
+        }
+        else setMealcount(parseInt(count, 10));
     }
 
     const changeMealcount = (diff) => {
@@ -22,7 +33,11 @@ export default function Mealcount({ MealcountRefresh }) {
             ToastAndroid.show("밀 플랜의 개수가 14개보다 많을 수 없습니다!", ToastAndroid.SHORT);
         else if(mealcount + diff < 0)
             ToastAndroid.show("밀 플랜의 개수가 0개보다 적을 수 없습니다!", ToastAndroid.SHORT);
-        else setMealcount(mealcount + diff);
+        else {
+            setMealcount(mealcount + diff);
+            console.log((mealcount + diff).toString(10));
+            AsyncStorage.setItem('mealcount', (mealcount + diff).toString(10));
+        }
     }
 
     return(

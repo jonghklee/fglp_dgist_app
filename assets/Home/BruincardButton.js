@@ -3,7 +3,7 @@ import { View, Text, TouchableHighlight, Animated } from "react-native";
 
 import styles from "./HomeSceneStyle";
 
-export default function CurrencyButton({ BruincardRefresh, isShrinked }) {
+export default function BruincardButton({ BruincardRefresh, isShrinked, gotoBruincardScene }) {
     const textfade = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function CurrencyButton({ BruincardRefresh, isShrinked }) {
             style={[styles.brcardform, styles.shadowProp]}
             activeOpacity={0.6}
             underlayColor="#F8F8F8"
-            onPress={()=>{}}
+            onPress={gotoBruincardScene}
         >
             <View style={{justifyContent: 'space-between', flex: 1}}>
                 <View>
