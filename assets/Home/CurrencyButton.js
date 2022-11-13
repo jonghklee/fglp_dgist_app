@@ -7,7 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./HomeSceneStyle";
 
 export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurrencyScene }) {
-    const [currencyNum, setCurrencyNum] = useState('데이터를 가져오는 중...')
+    const webViewRef = useRef();
+    const [currencyNum, setCurrencyNum] = useState('loading...');
+    const [isRefreshed, setIsRefreshed] = useState("true");
     const currencyUrl = 'https://spib.wooribank.com/pib/Dream?withyou=CMCOM0184';
     const jsCode_getExchangeRate = `
     setTimeout(() => {
@@ -26,7 +28,7 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
                     await timer(100);
                     fail_num += 1;
                     if(fail_num > lmt) {
-                        window.ReactNativeWebView.postMessage( "NONE" );
+                        window.ReactNativeWebView.postMessage( "0" );
                     }
                 }
             }
@@ -34,6 +36,17 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
         getEx();
     }, 100);
     `
+
+    const w2n = async (e) => {
+        if(isRefreshed == "true") {
+            setIsRefreshed("doing");
+            setCurrencyNum("loading...");
+            await AsyncStorage.setItem('currency', e.nativeEvent.data);
+            await AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r);});
+            setIsRefreshed("done");
+        }
+    };
+
     const textfade = useRef(new Animated.Value(1)).current;
     
     useEffect(() => {
@@ -50,21 +63,20 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
     }, [isShrinked]);
 
     const RefreshCurrency = () => {
-
+        setIsRefreshed("true");
+        webViewRef.current && webViewRef.current.reload();
     }
 
-    const w2n = async (e) => {
-        await AsyncStorage.setItem('currency', e.nativeEvent.data);
-        setCurrencyNum(e.nativeEvent.data);
-        //setCurrencyNum(AsyncStorage.getItem('currency'));
-    };
+    const gotoCurrencyScene1 = () => {
+        if (isRefreshed == "done" || true) { gotoCurrencyScene() }
+    }
 
     return(
         <TouchableHighlight
             style={[styles.currencyform, styles.shadowProp]}
             activeOpacity={0.6}
             underlayColor="#F8F8F8"
-            onPress={gotoCurrencyScene}
+            onPress={gotoCurrencyScene1}
         >
             <View style={{justifyContent: 'space-between', flex: 1}}>
                 <View>
@@ -75,15 +87,16 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
                         {currencyNum}
                     </Text>
                 </View>
-            <View style={{height:1}}>
-                <WebView
-                  javaScriptEnabled={true}
-                  injectedJavaScript={jsCode_getExchangeRate}
-                  source={{uri: currencyUrl}}
-                  onMessage={w2n}
-                  style={{flex:0}}
-                />
-            </View>
+                <View style={{height:1}}>
+                    <WebView
+                      javaScriptEnabled={true}
+                      ref={w=>{webViewRef.current = w}}
+                      injectedJavaScript={jsCode_getExchangeRate}
+                      source={{uri: currencyUrl}}
+                      onMessage={w2n}
+                      style={{flex:0}}
+                    />
+                </View>
                 <Animated.Text style={{fontSize: 10, color: 'black', fontWeight: '400', opacity: textfade}}>
                     미국시기준 9월 14일(수){'\n'}오후 5:23 업데이트 됨
                 </Animated.Text>
