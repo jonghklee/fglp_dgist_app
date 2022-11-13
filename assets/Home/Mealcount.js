@@ -14,21 +14,16 @@ export default function Mealcount({ MealcountRefresh }) {
         MealcountRefresh.current = RefreshMealcount;
     }, []);
 
-    const RefreshMealcount = () => {
-        let count;
-        AsyncStorage.getItem('mealcount', (err, result) => {
-            if(!err) count = result;
-            else console.log("ERROR");
-        });
-        console.log(count);
+    const RefreshMealcount = async () => {
+        const count = await AsyncStorage.getItem('mealcount');
         if(count == null) {
             setMealcount(14);
-            AsyncStorage.setItem('mealcount', "14");
+            await AsyncStorage.setItem('mealcount', "14");
         }
         else setMealcount(parseInt(count, 10));
     }
 
-    const changeMealcount = (diff) => {
+    const changeMealcount = async (diff) => {
         if(mealcount + diff > 14)
             ToastAndroid.show("밀 플랜의 개수가 14개보다 많을 수 없습니다!", ToastAndroid.SHORT);
         else if(mealcount + diff < 0)
@@ -36,7 +31,7 @@ export default function Mealcount({ MealcountRefresh }) {
         else {
             setMealcount(mealcount + diff);
             console.log((mealcount + diff).toString(10));
-            AsyncStorage.setItem('mealcount', (mealcount + diff).toString(10));
+            await AsyncStorage.setItem('mealcount', (mealcount + diff).toString(10));
         }
     }
 

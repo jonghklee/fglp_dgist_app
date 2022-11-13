@@ -6,13 +6,14 @@ import { useDispatchContext, useModeContext, useNextIDContext, useSetModeContext
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default function InputForm({ inputRef }) {
-    const windowWidth = Dimensions.get("window").width;
+export default function InputForm() {
     const dispatch = useDispatchContext();
     const nextID = useNextIDContext();
-    const [input, setInput] = useState("");
     const mode = useModeContext();
     const setMode = useSetModeContext();
+
+    const windowWidth = Dimensions.get("window").width;
+    const [input, setInput] = useState("");
     const [editable, setEditable] = useState(false);
 
     useEffect(() => {
@@ -34,32 +35,37 @@ export default function InputForm({ inputRef }) {
             categoryID: nextID.current.categoryID,
             categoryname: input,
         });
-        nextID.current.categoryID++;
+        nextID.current.inside.push({
+            category: nextID.current.categoryID++,
+            ID: 0, 
+        });
     }
 
     return(
-        <View style={[
-            styles.createcategoryinput,
-            styles.shadowProp,
-            {opacity: mode === "CATEGORY_ADD" ? 1 : 0}
-        ]}>
-            <TextInput
-                ref={inputRef}
-                style={{width: windowWidth-115}}
-                value={input}
-                onChangeText={text => setInput(text)}
-                onSubmitEditing={onCreate}
-                editable={editable}
-            />
-            <TouchableOpacity
-                onPress={onCreate}
-                style={{
-                    width: 50, height: 50, justifyContent: 'center', alignItems: 'center', right: 4
-                }}
-                disabled={!mode === "CATEGORY_ADD"}
-            >
-                <MaterialIcons name="check" size={25} color="black" />
-            </TouchableOpacity>
-        </View>
+        mode === "CATEGORY_ADD"
+        &&
+        <>
+            <View style={[
+                styles.createcategoryinput,
+                styles.shadowProp,
+            ]}>
+                <TextInput
+                    style={{width: windowWidth-115}}
+                    value={input}
+                    onChangeText={text => setInput(text)}
+                    onSubmitEditing={onCreate}
+                    editable={editable}
+                />
+                <TouchableOpacity
+                    onPress={onCreate}
+                    style={{
+                        width: 50, height: 50, justifyContent: 'center', alignItems: 'center', right: 4
+                    }}
+                    disabled={!mode === "CATEGORY_ADD"}
+                >
+                    <MaterialIcons name="check" size={25} color="black" />
+                </TouchableOpacity>
+            </View>
+        </>
     );
 }

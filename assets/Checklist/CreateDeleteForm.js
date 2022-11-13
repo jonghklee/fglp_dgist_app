@@ -1,29 +1,33 @@
+import { useEffect } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 
 import styles from './ChecklistSceneStyle';
-import { useDellistContext, useModeContext, useSetModeContext } from "./ChecklistContext";
+import { useDellistContext, useModeContext, useSetModeContext, useStateContext } from "./ChecklistContext";
 
 import Feather from 'react-native-vector-icons/Feather';
 
-export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
+export default function CreateDeleteForm({ scrollRef, CreateCategory }) {
+    const state = useStateContext();
     const dellist = useDellistContext();
     const mode = useModeContext();
     const setMode = useSetModeContext();
+
+    useEffect(() => {
+        CreateCategory.current = onCreateCategory;
+    }, []);
 
     const onCreateCategory = () => {
         if(mode === "CATEGORY_ADD") {
             setMode("IDLE");
         }
-        else if(mode === "IDLE") {
-            setMode("CATEGORY_ADD");
-            scrollRef.current.scrollToEnd({animated: true});
-            inputRef.current.focus();
-        }
         else if(mode === "CATEGORY_DELETE") {
             onDeleteCategory();
             setMode("CATEGORY_ADD");
             scrollRef.current.scrollToEnd({animated: true});
-            inputRef.current.focus();
+        }
+        else {
+            setMode("CATEGORY_ADD");
+            scrollRef.current.scrollToEnd({animated: true});
         }
     }
 
@@ -31,23 +35,14 @@ export default function CreateDeleteForm({ scrollRef, inputRef, navigation }) {
         if(mode === "CATEGORY_DELETE") {
             setMode("IDLE");
             dellist.current = [];
-            navigation.setOptions({tabBarStyle: {
-                display: 'flex',
-                height: 60,
-                paddingBottom: 5,
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
-                backgroundColor: 'white',
-                position: 'absolute',
-            }});
         }
-        else if(mode === "IDLE") {
+        else {
             setMode("CATEGORY_DELETE");
-            navigation.setOptions({tabBarStyle: {display: 'none'}});
         }
     }
 
     return(
+        (state.length || mode === "CATEGORY_ADD") &&
         <View style={styles.createdeleteform}>
             <TouchableHighlight
                 style={[styles.createbutton]}

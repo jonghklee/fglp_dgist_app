@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { SafeAreaView, StatusBar, Text, View, 
          TouchableHighlight } from 'react-native';
 
@@ -11,8 +11,8 @@ import BottomTaskbarForm from './BottomTaskBar';
 export default function ChecklistScene({ navigation }) {
     // 스크롤 위치 관리
     const scrollRef = useRef();
-    // input focus 관리
-    const inputRef = useRef();
+    // CREATE 함수
+    const CreateCategory = useRef();
 
     return(
         <SafeAreaView style={styles.body}>
@@ -30,13 +30,12 @@ export default function ChecklistScene({ navigation }) {
             </TouchableHighlight>
             <ChecklistContext>
                 <CreateDeleteForm
-                    inputRef={inputRef}
                     scrollRef={scrollRef}
-                    navigation={navigation}
+                    CreateCategory={CreateCategory}
                 />
                 <ScrollForm
                     scrollRef={scrollRef}
-                    inputRef={inputRef}
+                    CreateCategory={CreateCategory}
                 />
                 <BottomTaskbarForm
                     navigation={navigation}

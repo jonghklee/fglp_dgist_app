@@ -1,7 +1,8 @@
-import { useReducer, useState, createContext, useContext, useRef } from "react";
-import { create } from "react-test-renderer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useReducer, useState, createContext, useContext, useRef, useEffect } from "react";
 
-const initialState = [
+// TEST DATA
+/* const initialState1 = [
     {
         categoryID: 1,
         categoryname: "출국 전",
@@ -134,34 +135,36 @@ const initialState = [
     },
 ]
 
-const initialNextID = {
+const initialNextID1 = {
     categoryID: 6,
     inside: [
         {
             category: 1,
-            ID: 4, 
+            ID: 5, 
         },
         {
             category: 2,
-            ID: 3, 
+            ID: 4, 
         },
         {
             category: 3,
-            ID: 5, 
+            ID: 6, 
         },
         {
             category: 4,
-            ID: 5, 
+            ID: 6, 
         },
         {
             category: 5,
-            ID: 5, 
+            ID: 6, 
         },
     ]
-}
+} */
 
 function reducer(state, action) {
     switch(action.type) {
+        case 'FETCH':
+            return(action.data);
         case 'CATEGORY_ADD':
             return([
                 ...state,
@@ -172,8 +175,13 @@ function reducer(state, action) {
                 }
             ]);
         case 'CATEGORY_DELETE':
-            return(state.filter(category =>
-                !(category.categoryID in action.categoryIDList)
+            return(state.filter(category => {
+                    for(let i=0; i<action.categoryIDList.length; i++) {
+                        if(category.categoryID == action.categoryIDList[i])
+                            return false;
+                    }
+                    return true;
+                }
             ));
         case 'CATEGORY_EDIT':
             return(state.map(category =>
@@ -238,7 +246,7 @@ function reducer(state, action) {
                 {
                     ...category,
                     todos: category.todos.filter(todo => 
-                        !(todo.ID in action.ID)
+                        (todo.ID !== action.ID)
                     )
                 }
                 : category
@@ -254,10 +262,33 @@ const modeContext = createContext();
 const setModeContext = createContext();
 
 export default function ChecklistContext({ children }) {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const nextID = useRef(initialNextID);
+    const [state, dispatch] = useReducer(reducer, 1);
+    const nextID = useRef({ categoryID: 1, inside: [] });
     const dellist = useRef([]);
     const [mode, setMode] = useState("IDLE");
+
+    useEffect(() => {
+        async function FetchChecklist() {
+            let initialState = JSON.parse(await AsyncStorage.getItem('checklist'));
+            let initialNextID = JSON.parse(await AsyncStorage.getItem('checklistnextid'));
+            if(!initialState) initialState = [];
+            if(!initialNextID) initialNextID = { categoryID: 1, inside: [] };
+            dispatch({
+                type: 'FETCH',
+                data: initialState,
+            });
+            nextID.current = initialNextID;
+        }
+        FetchChecklist();
+    }, []);
+
+    useEffect(() => {
+        async function UpdateChecklist() {
+            await AsyncStorage.setItem('checklist', JSON.stringify(state));
+            await AsyncStorage.setItem('checklistnextid', JSON.stringify(nextID.current));
+        }
+        UpdateChecklist();
+    }, [state]);
 
     return(
         <stateContext.Provider value={state}>

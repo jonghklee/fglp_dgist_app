@@ -1,50 +1,61 @@
-import { useCallback, useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 
+import Feather from "react-native-vector-icons/Feather";
+
+import styles from "./ChecklistSceneStyle";
 import { useModeContext, useStateContext } from "./ChecklistContext";
 import Category from "./Category";
 import InputForm from "./InputForm";
 
-export default function ScrollForm({ scrollRef, inputRef }) {
+export default function ScrollForm({ scrollRef, inputRef, CreateCategory }) {
     const state = useStateContext();
     const mode = useModeContext();
-    const [contentheight, setContentheight] = useState(0);
-
-    const heightCalc = useCallback(() => {
-        const offset1 = 5;
-        const offset2 = 20;
-        return state.reduce((acc, cur) => {
-            if(cur.todos.length === 0) return(acc+90+24 + offset1);
-            else return(acc+100+(cur.todos.length-1)*35+24 + offset2);
-        }, 20)
-    }, [state]);
-
-    useEffect(() => {
-        setContentheight(heightCalc());
-    }, []);
-
-    useEffect(() => {
-        setContentheight(heightCalc());
-    }, [state, mode]);
-
+    
     return(
         <ScrollView
             bounces
-            ref={scrollRef}
             style={{marginBottom: 60}}
-            contentContainerStyle={{height: contentheight}}
+            ref={scrollRef}
             showsVerticalScrollIndicator={true}
         >
-            {state.map((category, index) =>
-                <Category
-                    index={index}
-                    key={category.categoryID}
-                    categoryID={category.categoryID}
-                />
-            )}
+            {
+                state === 1 ?
+                <Text style={{fontWeight: '400', fontSize: 20, color: 'black', alignSelf: 'center', marginTop: 40}}>
+                    로딩 중...
+                </Text>
+                : (!state.length && mode !== "CATEGORY_ADD") &&
+                <View style={{
+                    marginTop: 80,
+                    alignItems: 'center',
+                }}>
+                    <Text style={{fontSize: 20, fontWeight: '500', color: 'black'}}>
+                        체크리스트를 만들어보세요!
+                    </Text>
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        style={styles.tutorialplusbutton}
+                        onPress={CreateCategory.current}
+                    >
+                        <View style={styles.tutorialplusicon}>
+                            <Feather name="plus" color="white" size={33} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            }
+            {
+                (state !== 1) &&
+                state.map((category, index) =>
+                    <Category
+                        index={index}
+                        key={category.categoryID}
+                        categoryID={category.categoryID}
+                    />
+                )
+            }
             <InputForm
                 inputRef={inputRef}
             />
+            <View style={{height: 30}} />
         </ScrollView>
     )
 }
