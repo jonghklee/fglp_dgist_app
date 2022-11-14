@@ -10,7 +10,7 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
     const webViewRef = useRef();
     const [currencyNum, setCurrencyNum] = useState('loading...');
     const [isRefreshed, setIsRefreshed] = useState("true");
-    const currencyUrl = 'https://spib.wooribank.com/pib/Dream?withyou=CMCOM0184';
+    const currencyUrl = 'https://finance.daum.net/exchanges';
     const jsCode_getExchangeRate = `
     setTimeout(() => {
         const timer = ms => new Promise(res=>setTimeout(res,ms));
@@ -21,7 +21,7 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
             let lmt = 50;
             while (notFinished) {
                 try {
-                    exchangeRate = document.querySelector('#fxprint > table > tbody > tr:nth-child(1) > td:nth-child(3)').innerHTML;
+                    exchangeRate = document.querySelector('#boxContents > div.tableB > div.box_contents > div > table > tbody > tr.first > td:nth-child(5) > span').innerHTML;
                     window.ReactNativeWebView.postMessage( exchangeRate );
                     notFinished = false;
                 } catch (err) {
@@ -40,7 +40,6 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
     const w2n = async (e) => {
         if(isRefreshed == "true") {
             setIsRefreshed("doing");
-            setCurrencyNum("loading...");
             await AsyncStorage.setItem('currency', e.nativeEvent.data);
             await AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r);});
             setIsRefreshed("done");
@@ -64,6 +63,7 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
 
     const RefreshCurrency = () => {
         setIsRefreshed("true");
+        setCurrencyNum("loading...");
         webViewRef.current && webViewRef.current.reload();
     }
 
@@ -95,6 +95,7 @@ export default function CurrencyButton({ CurrencyRefresh, isShrinked, gotoCurren
                       source={{uri: currencyUrl}}
                       onMessage={w2n}
                       style={{flex:0}}
+                      userAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
                     />
                 </View>
                 <Animated.Text style={{fontSize: 10, color: 'black', fontWeight: '400', opacity: textfade}}>
