@@ -49,17 +49,6 @@ export default function HomeInterface({ navigation }) {
         BruincardRefresh.current();
         MealcountRefresh.current();
         DiningRefresh.current();
-        // 부모 TabBarNavigation에서 Tabbar 다시 보이기
-        navigation.getParent()?.setOptions({
-            tabBarStyle: {
-                display: 'flex',
-                height: 60,
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
-                backgroundColor: 'white',
-                position: 'absolute',
-            }
-        });
     }, []);
     
     const onRefresh = useCallback(() => {

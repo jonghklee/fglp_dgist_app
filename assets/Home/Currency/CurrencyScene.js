@@ -17,15 +17,24 @@ export default function CurrencyScene({ navigation }) {
 
     AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r)});
 
-    // 부모 TabBarNavigation에서 Tabbar 없애기
+    // Parent TabBarNavigation Control
     useEffect(() => {
+        // Delete Parent Bottom Tab Bar
         navigation.getParent()?.setOptions({
           tabBarStyle: {
             display: "none"
           }
         });
+        // Show Parent Bottom Tab Bar
         return () => navigation.getParent()?.setOptions({
-          tabBarStyle: undefined
+            tabBarStyle: {
+                display: 'flex',
+                height: 60,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                backgroundColor: 'white',
+                position: 'absolute',
+            }
         });
     }, [navigation]);
 
