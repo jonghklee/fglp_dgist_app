@@ -19,8 +19,8 @@ export default function BruincardScene({ navigation }) {
     };
 
     try{
-        document.querySelector('#logon').value = 'jonghklee';
-        document.querySelector('#pass').value = 'emc^2ua4';
+        document.querySelector('#logon').value = '1';
+        document.querySelector('#pass').value = '1';
         notFinished = false;
         document.querySelector('#sso > form > div > table > tbody > tr > td:nth-child(1) > button').click();
     } catch (e) {
