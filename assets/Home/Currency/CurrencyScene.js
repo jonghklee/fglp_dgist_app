@@ -17,6 +17,27 @@ export default function CurrencyScene({ navigation }) {
 
     AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r)});
 
+    // Parent TabBarNavigation Control
+    useEffect(() => {
+        // Delete Parent Bottom Tab Bar
+        navigation.getParent()?.setOptions({
+          tabBarStyle: {
+            display: "none"
+          }
+        });
+        // Show Parent Bottom Tab Bar
+        return () => navigation.getParent()?.setOptions({
+            tabBarStyle: {
+                display: 'flex',
+                height: 60,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                backgroundColor: 'white',
+                position: 'absolute',
+            }
+        });
+    }, [navigation]);
+
     return (
         <SafeAreaView style={styles.body}>
             <ScrollView>

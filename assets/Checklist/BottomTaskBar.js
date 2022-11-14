@@ -72,7 +72,13 @@ export default function BottomTaskbarForm({ navigation }) {
                             else if(mode === "CATEGORY_EDIT") ConfirmEditing();
                         }}
                         >
-                        <Text style={{color: '#CCCCCC', fontSize: 16, fontWeight: '500'}}>완료</Text>
+                        <Text style={{color: '#2d7dfc', fontSize: 16, fontWeight: '500'}}>
+                            {
+                                mode === "CATEGORY_DELETE" ?
+                                "삭제"
+                                : "완료"
+                            }
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -83,7 +89,9 @@ export default function BottomTaskbarForm({ navigation }) {
                             else if(mode === "CATEGORY_EDIT") CancelEditing();
                         }}
                     >
-                        <Text style={{color: '#FF4B4B', fontSize: 16, fontWeight: '500'}}>취소</Text>
+                        <Text style={{color: '#FF4B4B', fontSize: 16, fontWeight: '500'}}>
+                            취소
+                        </Text>
                     </TouchableOpacity>
                 </View>
             }

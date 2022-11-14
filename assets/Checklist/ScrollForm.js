@@ -1,4 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity, Keyboard } from "react-native";
 
 import Feather from "react-native-vector-icons/Feather";
 
@@ -10,11 +11,25 @@ import InputForm from "./InputForm";
 export default function ScrollForm({ scrollRef, inputRef, CreateCategory }) {
     const state = useStateContext();
     const mode = useModeContext();
+    const [iskeyon, setIskeyon] = useState(false);
+
+    const keyboardShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+            setIskeyon(true);
+        }
+    );
+    const keyboardHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+            setIskeyon(false);
+        }
+    );
     
     return(
         <ScrollView
             bounces
-            style={{marginBottom: 60}}
+            style={{marginBottom: iskeyon ? 0 : 60}}
             ref={scrollRef}
             showsVerticalScrollIndicator={true}
         >

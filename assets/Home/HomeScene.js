@@ -1,4 +1,3 @@
-// import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeInterface from './HomeInterface';
@@ -37,7 +36,7 @@ export default function HomeScene({ navigation }) {
                 name="CurrencyScene"
                 component={CurrencyScene}
                 options={{
-                    animation: 'default',
+                    animation: 'fade_from_bottom',
                     transitionSpec: {
                         open: config,
                         close: config,
