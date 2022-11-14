@@ -13,15 +13,7 @@ export default function BruincardScene({ navigation }) {
     return(
         <SafeAreaView style={[styles.body, {justifyContent:'space-between'}]}>
             <ScrollView>
-                <View style={{height:149}}>
-                    <View style={{height: 60, justifyContent: 'center', paddingLeft: 20}}>
-                        <TouchableOpacity
-                            style={{width: 30, height: 30, alignItems: 'center', justifyContent: "center"}}
-                            onPress={() => {navigation.navigate("HomeInterface");}}
-                            >
-                            <Feather style={{flex:1}} name="chevron-left" size={28} color="black" />
-                        </TouchableOpacity>
-                    </View>
+                <View style={{height:89}}>
                     <View style={{paddingLeft: 20}}>
                         <Text style={{fontSize: 28, color: "black", fontWeight: "900"}}>Bruincard</Text>
                         <View style={{flexDirection:'row'}}>
