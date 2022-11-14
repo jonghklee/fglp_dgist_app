@@ -17,6 +17,18 @@ export default function CurrencyScene({ navigation }) {
 
     AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r)});
 
+    // 부모 TabBarNavigation에서 Tabbar 없애기
+    useEffect(() => {
+        navigation.getParent()?.setOptions({
+          tabBarStyle: {
+            display: "none"
+          }
+        });
+        return () => navigation.getParent()?.setOptions({
+          tabBarStyle: undefined
+        });
+    }, [navigation]);
+
     return (
         <SafeAreaView style={[styles.body, {justifyContent:'space-between'}]}>
             <View>

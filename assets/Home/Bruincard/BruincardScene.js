@@ -10,6 +10,18 @@ import testWebView from './BruincardTestWebview';
 const Stack = createNativeStackNavigator();
 
 export default function BruincardScene({ navigation }) {
+    // 부모 TabBarNavigation에서 Tabbar 없애기
+    useEffect(() => {
+        navigation.getParent()?.setOptions({
+          tabBarStyle: {
+            display: "none"
+          }
+        });
+        return () => navigation.getParent()?.setOptions({
+          tabBarStyle: undefined
+        });
+    }, [navigation]);
+
     return(
         <Stack.Navigator>
             <Stack.Screen
