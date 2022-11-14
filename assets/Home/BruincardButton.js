@@ -15,8 +15,8 @@ export default function BruincardButton({ BruincardRefresh, isShrinked, gotoBrui
     
     const jscode = `
     try{
-        document.querySelector('#logon').value = 'jonghklee';
-        document.querySelector('#pass').value = 'emc^2ua4';
+        document.querySelector('#logon').value = '';
+        document.querySelector('#pass').value = '';
         notFinished = false;
         document.querySelector('#sso > form > div > table > tbody > tr > td:nth-child(1) > button').click();
     } catch (e) {
