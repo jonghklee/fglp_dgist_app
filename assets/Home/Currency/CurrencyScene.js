@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
@@ -18,65 +18,69 @@ export default function CurrencyScene({ navigation }) {
     AsyncStorage.getItem('currency', (e,r)=>{setCurrencyNum(r)});
 
     return (
-        <SafeAreaView style={[styles.body, {justifyContent:'space-between'}]}>
-            <View>
-                <View style={{height:178}}>
-                    <View style={{ width: 48, height: 60, alignItems: 'flex-end', justifyContent: 'center'}}>
-                        <TouchableOpacity
-                            style={{width: 30, height: 30, alignItems: 'center', justifyContent: "center"}}
-                            onPress={() => {navigation.navigate("HomeInterface");}}
-                            >
-                            <Feather style={{flex:1}} name="chevron-left" size={28} color="black" />
+        <SafeAreaView style={styles.body}>
+            <ScrollView>
+                <View style={{justifyContent:'space-between'}}>
+                    <View>
+                        <View style={{height:178}}>
+                            <View style={{ width: 48, height: 60, alignItems: 'flex-end', justifyContent: 'center'}}>
+                                <TouchableOpacity
+                                    style={{width: 30, height: 30, alignItems: 'center', justifyContent: "center"}}
+                                    onPress={() => {navigation.navigate("HomeInterface");}}
+                                    >
+                                    <Feather style={{flex:1}} name="chevron-left" size={28} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={{fontSize: 28, color: "black", fontWeight: "900", paddingLeft: 20}}>환율 계산기</Text>
+                        </View>
+
+                        <View style={{paddingLeft:20, paddingRight:20}}>
+
+                            <View style={{flexDirection:'row', height:120}}>
+                                <TouchableWithoutFeedback onPress={()=>{}} >
+                                    <View style={[button1Style, styles.shadowProp]} >
+                                        <Text style={button1TextStyle}>보낼 때</Text>
+                                        <Text style={[button1TextStyle, {paddingTop: 26}]}>{currencyNum}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <View style={{flex:3, backgroundColor:'rgba(0,0,0,0)'}}/>
+                                <TouchableWithoutFeedback onPress={()=>{}} >
+                                    <View style={[button2Style, styles.shadowProp]} >
+                                        <Text style={button2TextStyle}>받을 때</Text>
+                                        <Text style={[button2TextStyle, {paddingTop: 26}]}>{currencyNum}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+
+                            <View style={{paddingTop:6}}>
+                                <Text style={{fontSize:12, color:'#BBBBBB'}}>미국시기준 9월14일(수) 오후 5:23 업데이트 됨</Text>
+                            </View>
+                            <View style={{paddingTop:34}}>
+                                <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                                    <Text style={button_styles.other_text}>계산할 금액</Text>
+                                    <View style={{flexDirection:'row'}}>
+                                        <TextInput style={[button_styles.other_text,{padding:0, fontWeight:'500', color:'#D9D9D9'}]} placeholder="직접 입력"/>
+                                        <Text style={button_styles.other_text}> 달러</Text>
+                                    </View>
+                                </View>
+                                <View style={{flexDirection:'row', justifyContent: 'space-between', paddingTop:24}}>
+                                    <Text style={button_styles.other_text}>계산된 금액</Text>
+                                    <View>
+                                        <Text style={button_styles.other_text}>원</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{justifyContent:'flex-end'}}>
+                        <TouchableOpacity style={{alignItems:'center', paddingBottom:63}}>
+                            <View style={[button_styles.button, {}]}>
+                                <Text style={button_styles.button_text}>확인</Text>
+                            </View>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{fontSize: 28, color: "black", fontWeight: "900", paddingLeft: 20}}>환율 계산기</Text>
                 </View>
-
-                <View style={{paddingLeft:20, paddingRight:20}}>
-
-                    <View style={{flexDirection:'row', height:120}}>
-                        <TouchableWithoutFeedback onPress={()=>{}} >
-                            <View style={[button1Style, styles.shadowProp]} >
-                                <Text style={button1TextStyle}>보낼 때</Text>
-                                <Text style={[button1TextStyle, {paddingTop: 26}]}>{currencyNum}</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <View style={{flex:3, backgroundColor:'rgba(0,0,0,0)'}}/>
-                        <TouchableWithoutFeedback onPress={()=>{}} >
-                            <View style={[button2Style, styles.shadowProp]} >
-                                <Text style={button2TextStyle}>받을 때</Text>
-                                <Text style={[button2TextStyle, {paddingTop: 26}]}>{currencyNum}</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-
-                    <View style={{paddingTop:6}}>
-                        <Text style={{fontSize:12, color:'#BBBBBB'}}>미국시기준 9월14일(수) 오후 5:23 업데이트 됨</Text>
-                    </View>
-                    <View style={{paddingTop:34}}>
-                        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-                            <Text style={button_styles.other_text}>계산할 금액</Text>
-                            <View>
-                                <Text style={button_styles.other_text}>달러</Text>
-                            </View>
-                        </View>
-                        <View style={{flexDirection:'row', justifyContent: 'space-between', paddingTop:24}}>
-                            <Text style={button_styles.other_text}>계산된 금액</Text>
-                            <View>
-                                <Text style={button_styles.other_text}>원</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <View style={{justifyContent:'flex-end'}}>
-                <TouchableOpacity style={{alignItems:'center', paddingBottom:63}}>
-                    <View style={[button_styles.button, {}]}>
-                        <Text style={button_styles.button_text}>확인</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-
+            </ScrollView>
         </SafeAreaView>
     );
 }

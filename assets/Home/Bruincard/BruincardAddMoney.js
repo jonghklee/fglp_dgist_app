@@ -89,6 +89,7 @@ export default function BruincardScene({ navigation }) {
                 <View style={{justifyContent:'flex-end'}}>
                     <TouchableOpacity
                         style={{alignItems:'center', paddingTop:49, paddingBottom:42}}
+                        activeOpacity={0.6}
                         onPress={() => {navigation.navigate("addMoney");}}
                     >
                         <View style={[button_styles.button, {}]}>

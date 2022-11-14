@@ -14,13 +14,9 @@ export default function BruincardScene({ navigation }) {
     const bruinUrl = 'https://secure.bruincard.ucla.edu/bcw/app/webdeposit/TransactionRequest.aspx';
     
     const jscode = `
-    const sleep = (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    };
-
     try{
-        document.querySelector('#logon').value = '1';
-        document.querySelector('#pass').value = '1';
+        document.querySelector('#logon').value = '';
+        document.querySelector('#pass').value = '';
         notFinished = false;
         document.querySelector('#sso > form > div > table > tbody > tr > td:nth-child(1) > button').click();
     } catch (e) {
@@ -32,13 +28,14 @@ export default function BruincardScene({ navigation }) {
         document.querySelector('#ctl00_MainContent_txtUID').value = '906093475'
         document.querySelector('#ctl00_MainContent_txtDepositAmount').value = '10'
 
-        alert('c');
+        window.ReactNativeWebView.postMessage( "1" );
         document.querySelector('#ctl00_MainContent_btnSubmit').click();
-        alert('a');
+    }
 
-        await sleep(10000);
-        alert('b');
+    func();
 
+    `
+    const jscode2 = `
         document.querySelector('#txtCCNo').value = '1001001001001000';
         document.querySelector('#ddExpMonth').value = '04';
         document.querySelector('#ddExpYear').value = '2023';
@@ -50,25 +47,22 @@ export default function BruincardScene({ navigation }) {
         document.querySelector('#ddCountry').value = 'Korea, Republic of';
         document.querySelector('#txtCID').value = 'Korea, Republic of';
         document.querySelector('#txtEmailAddr').value = 'jonghklee@dgist.ac.kr';
-    }
-
-    func();
-
-    //const val = document.querySelector('#MainContent_AccountSummaryPanel > div:nth-child(1) > a > p.accountBalance > span').innerHTML
-    //window.ReactNativeWebView.postMessage( val );
     `
+    useEffect(()=>{})
+
+    const sleep = (ms) => {
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    };
 
     const w2n = async (e) => {
-        if(isRefreshed == "true") {
-            const val = '$' + e.nativeEvent.data.slice(0,-4);
-            await AsyncStorage.setItem('bruinMoney', val);
-            await AsyncStorage.getItem('bruinMoney', (e,r)=>{setBruinMoneyNum(r);});
-        }
+        await sleep(10000);
+        console.log("hihi");
+        this.webview.injectJavaScript(jscode2);
     };
 
     return(
         <WebView
-          ref={w=>{webViewRef.current = w}}
+          ref={w=>{this.webview = w}}
           pullToRefreshEnabled
           scrollEnabled
           javaScriptEnabled={true}
