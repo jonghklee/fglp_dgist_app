@@ -1,7 +1,7 @@
 /* React Native 기본 모듈 */
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ScrollView, Dimensions, RefreshControl, StatusBar,
-         View, Text, SafeAreaView, TouchableHighlight } from 'react-native';
+         View, Text, SafeAreaView, TouchableHighlight, TouchableOpacity } from 'react-native';
 
 /* Open Source 모듈 */
 import LinearGradient from 'react-native-linear-gradient';
@@ -86,14 +86,17 @@ export default function HomeInterface({ navigation }) {
                         0123456789
                     </Text>
                 </View>
-                <TouchableHighlight>
+                <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => { navigation.navigate("MyAccountScene") }}
+                >
                     <View style={styles.profileform}>
                         <Text style={{fontSize: 14, color: 'black', fontWeight: '700'}}>
                             김현우님 어서오세요
                         </Text>
                         <View style={styles.profileicon} />
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </LinearGradient>
             <ScrollView
                 showsVerticalScrollIndicator={false}

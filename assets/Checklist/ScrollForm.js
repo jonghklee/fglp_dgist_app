@@ -29,7 +29,7 @@ export default function ScrollForm({ scrollRef, inputRef, CreateCategory }) {
     return(
         <ScrollView
             bounces
-            style={{marginBottom: iskeyon ? 0 : 60}}
+            style={{marginBottom: mode !== "CATEGORY_EDIT" && iskeyon ? 0 : 60}}
             ref={scrollRef}
             showsVerticalScrollIndicator={true}
         >

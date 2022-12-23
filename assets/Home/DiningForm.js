@@ -8,10 +8,12 @@ import styles from "./HomeSceneStyle";
 export default function DiningForm({ DiningRefresh }) {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    const statusbarHeight = StatusBar.currentHeight;
+    
 
     const otherelementheight = 353.42857142857144;      // fixed val, other component height sum
     const menuformheight =                              // tabbarheight = 60 일때
-        windowHeight - otherelementheight;
+        (windowHeight - statusbarHeight - 60) - otherelementheight;
 
     const menucontent = [
         {
