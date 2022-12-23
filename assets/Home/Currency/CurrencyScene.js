@@ -39,9 +39,9 @@ export default function CurrencyScene({ navigation }) {
     }, [navigation]);
 
     return (
-        <SafeAreaView style={styles.body}>
+        <SafeAreaView style={[styles.body, {flex: 1}]}>
             <ScrollView style={{flex: 1}}>
-                <View style={{justifyContent:'space-between', flex: 1, backgroundColor:'pink'}}>
+                <View style={{justifyContent:'space-between', flex: 1}}>
                     <View>
                         <View style={{height:118}}>
                             <Text style={{fontSize: 28, color: "black", fontWeight: "900", paddingLeft: 20}}>환율 계산기</Text>
@@ -85,14 +85,12 @@ export default function CurrencyScene({ navigation }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{justifyContent:'flex-end', backgroundColor:'red'}}>
-                        <TouchableOpacity style={{alignItems:'center', paddingBottom:63}} activeOpacity={0.6}>
-                            
-                            <View style={[button_styles.button, {}]}>
-                                <Text style={button_styles.button_text}>확인</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={{alignItems:'center', paddingBottom:63}} activeOpacity={0.6}>
+                        
+                        <View style={[button_styles.button, {}]}>
+                            <Text style={button_styles.button_text}>확인</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
